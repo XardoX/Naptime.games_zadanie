@@ -89,6 +89,7 @@ GameObject:
   - component: {fileID: 5161360844015981300}
   - component: {fileID: 5161360844015981301}
   - component: {fileID: 1534924055922327720}
+  - component: {fileID: 4754058894889506561}
   m_Layer: 5
   m_Name: Button_Menu
   m_TagString: Untagged
@@ -220,6 +221,19 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &4754058894889506561
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5161360844015981303}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e3c8ab7306254b340950985c0446161a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  button: {fileID: 5161360844015981301}
 --- !u!1 &5161360844132762486
 GameObject:
   m_ObjectHideFlags: 0
