@@ -14,6 +14,10 @@ public class GameplaySettings : ScriptableObject
         [Min(0)]
         public int count;
 
+        [Min(0)]
+        public int cameraSize;
+
         public Color buttonIconColor;
+
     }
 }

@@ -4,8 +4,12 @@ using UnityEngine;
 
 public class Projectile : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField]
+    private float speed = 50f;
+
+
+
+    private void OnEnable()
     {
         
     }
@@ -13,6 +17,6 @@ public class Projectile : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        transform.position += transform.up * speed * Time.deltaTime;
     }
 }
