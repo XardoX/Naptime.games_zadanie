@@ -5,6 +5,7 @@ using UnityEngine;
 [CreateAssetMenu()]
 public class GameplaySettings : ScriptableObject
 {
+    public float screenFillPercent = 0.95f;
     public ObjectCountSetting[] objectsCountSettings;
 
 

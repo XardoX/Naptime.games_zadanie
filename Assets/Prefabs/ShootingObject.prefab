@@ -115,7 +115,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eef4962f7f2bf8d4eacbbd9c5b3c0a76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  projectilePrefab: {fileID: 0}
+  projectilePrefab: {fileID: 2108136116760933107, guid: a9ce800e30250164686a930b32ffbe48, type: 3}
+  body: {fileID: 5912614941198265830}
+  head: {fileID: 6222281264926724123}
   health: 3
   shootingCooldown: 1
 --- !u!1 &5794526796579944455

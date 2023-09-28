@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cca69dc384d439c45b5fbb4dec5844dc, type: 3}
   m_Name: GameplaySettings
   m_EditorClassIdentifier: 
+  screenFillPercent: 0.95
   objectsCountSettings:
   - count: 50
     cameraSize: 5

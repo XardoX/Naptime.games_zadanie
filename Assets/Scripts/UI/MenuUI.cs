@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.UI.Extensions;
+using UnityEngine.SceneManagement;
 using TMPro;
 public class MenuUI : MonoBehaviour
 {
@@ -13,6 +14,9 @@ public class MenuUI : MonoBehaviour
 
     [SerializeField]
     private SegmentedControl objectCountSegmentedControl;
+
+    [SerializeField]
+    private CanvasGroup mainMenuWindow, endGameWindow;
 
     public Action<int> OnObjectsCountSelected;
 
@@ -30,9 +34,19 @@ public class MenuUI : MonoBehaviour
 
     public void StartGame() => OnStartButtonClicked?.Invoke();
 
-    public void ToggleUI(bool toggle)
+    public void BackToMainMenu()
     {
-        gameObject.SetActive(toggle);
+        SceneManager.LoadSceneAsync("Main");
+    }
+
+    public void ToggleMenuUI(bool toggle)
+    {
+        mainMenuWindow.gameObject.SetActive(toggle);
+    }
+
+    public void ToggleEndGameUI(bool toggle)
+    {
+        endGameWindow.gameObject.SetActive(toggle);
     }
 
     private void Awake()
