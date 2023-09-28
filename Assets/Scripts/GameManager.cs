@@ -25,7 +25,7 @@ public class GameManager : MonoBehaviour
 
     private int selectedObjectsCount = 0;
 
-    public static Vector3 GetFreeRandomPosition()
+    private Vector3 GetFreeRandomPosition()
     {
         var camera = Camera.main;
         Vector3 randomPosition = GetRandomPosition();
@@ -40,8 +40,8 @@ public class GameManager : MonoBehaviour
 
         Vector3 GetRandomPosition()
         {
-            var width = Screen.width * Instance.gameplaySettings.screenFillPercent;
-            var height = Screen.height * Instance.gameplaySettings.screenFillPercent;
+            var width = Screen.width * gameplaySettings.screenFillPercent;
+            var height = Screen.height * gameplaySettings.screenFillPercent;
             return camera.ScreenToWorldPoint(new Vector3(Random.Range(Screen.width - width, width), 
                    Random.Range(Screen.height - height, height), camera.farClipPlane / 2));
         }
@@ -49,15 +49,6 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
-        if(Instance == null)
-        {
-            Instance = this;
-        }
-        else
-        {
-            Destroy(this);
-        }
-
         mainCamera = Camera.main;
         menuUI.CreateMenuButtons(gameplaySettings);
         menuUI.ToggleMenuUI(true);
@@ -67,23 +58,27 @@ public class GameManager : MonoBehaviour
 
     private void StartGame()
     {
+        mainCamera.orthographicSize = gameplaySettings.objectsCountSettings[selectedObjectsCount].cameraSize;
         menuUI.ToggleMenuUI(false);
         SpawnObjects(gameplaySettings.objectsCountSettings[selectedObjectsCount].count);
-        mainCamera.orthographicSize = gameplaySettings.objectsCountSettings[selectedObjectsCount].cameraSize;
     }
 
-    private void SetObjectsCount(int count) => selectedObjectsCount = count;
+    private void SetObjectsCount(int count)
+    {
+        selectedObjectsCount = count;
+        menuUI.EnableStartButton();
+    }
 
     private void SpawnObjects(int count)
     {
         for (int i = 0; i < count; i++)
         {
-            var shootingObject = ObjectPooler.Instance.GetPooledObject(0).GetComponent<ShootingObject>();
-            shootingObject.name = $"ShootingObject_{i}";
+            var shootingObject = ObjectPooler.GetPooledObject(0).GetComponent<ShootingObject>();
             shootingObject.transform.position = GetFreeRandomPosition();
             shootingObject.gameObject.SetActive(true);
             shootingObject.SetId(i);
             shootingObject.OnDeath += RemoveObject;
+            shootingObject.OnHit += StartRespawn;
             shootingObjects.Add(shootingObject);
         }
     }
@@ -113,6 +108,15 @@ public class GameManager : MonoBehaviour
         {
             collision.gameObject.SetActive(false);
         }
+    }
+
+    private void StartRespawn(ShootingObject shootingObject) => StartCoroutine(Respawn(shootingObject));
+
+    WaitForSeconds waitForRespawn = new WaitForSeconds(2f);
+    private IEnumerator Respawn(ShootingObject shootingObject)
+    {
+        yield return waitForRespawn;
+        shootingObject.Respawn(GetFreeRandomPosition());
     }
 
 #if UNITY_EDITOR

@@ -1,13 +1,12 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class ObjectPooler : MonoBehaviour
 {
 	public static ObjectPooler Instance;
+
 	public ObjectsToPool[] objectsToPool;
 
-	GameObject test;
 	void Awake()
 	{
 		if (Instance != null)
@@ -38,29 +37,29 @@ public class ObjectPooler : MonoBehaviour
 
 	}
 
-	public GameObject GetPooledObject(int objectID)
+	public static GameObject GetPooledObject(int objectID)
     {
-        for (int i = 0; i < objectsToPool[objectID].pooledObjects.Count; i++)
+        for (int i = 0; i < Instance.objectsToPool[objectID].pooledObjects.Count; i++)
         {
-            if (!objectsToPool[objectID].pooledObjects[i].activeInHierarchy)
+            if (!Instance.objectsToPool[objectID].pooledObjects[i].activeInHierarchy)
             {
-                return objectsToPool[objectID].pooledObjects[i];
+                return Instance.objectsToPool[objectID].pooledObjects[i];
             }
         }
 
-		GameObject obj = Instantiate(objectsToPool[objectID].prefab);
+		GameObject obj = Instantiate(Instance.objectsToPool[objectID].prefab);
 		obj.SetActive(false);
-		objectsToPool[objectID].pooledObjects.Add(obj);
-		obj.transform.parent = objectsToPool[objectID].objectsParent.transform;
-		obj.transform.position = objectsToPool[objectID].objectsParent.transform.position;
+		Instance.objectsToPool[objectID].pooledObjects.Add(obj);
+		obj.transform.parent = Instance.objectsToPool[objectID].objectsParent.transform;
+		obj.transform.position = Instance.objectsToPool[objectID].objectsParent.transform.position;
 		return obj;
 	}
 
-	public void ResetObjects(int objectID)
+	public static void ResetObjects(int objectID)
 	{
-		foreach (GameObject pooledObject in objectsToPool[objectID].pooledObjects)
+		foreach (GameObject pooledObject in Instance.objectsToPool[objectID].pooledObjects)
 		{
-			pooledObject.transform.parent = objectsToPool[objectID].objectsParent.transform;
+			pooledObject.transform.parent = Instance.objectsToPool[objectID].objectsParent.transform;
 			pooledObject.transform.localPosition = Vector3.zero;
 			pooledObject.SetActive(false);
 		}

@@ -1,6 +1,5 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class ShootingObject : MonoBehaviour
@@ -30,7 +29,7 @@ public class ShootingObject : MonoBehaviour
 
     public int Id => id;
 
-    public Action<ShootingObject> OnDeath;
+    public Action<ShootingObject> OnHit, OnDeath;
 
     public void SetId(int newId) => id = newId;
 
@@ -40,9 +39,12 @@ public class ShootingObject : MonoBehaviour
         head.enabled = toggle;
     }
 
-    void Start()
+    public void Respawn(Vector3 newPosition)
     {
-        
+        gameObject.SetActive(true);
+        ToggleGraphic(true);
+        transform.position = newPosition;
+        isAlive = true;
     }
 
     void Update()
@@ -75,20 +77,11 @@ public class ShootingObject : MonoBehaviour
         if(shootingTime >= shootingCooldown)
         {
             shootingTime = 0f;
-            var newProjectile = ObjectPooler.Instance.GetPooledObject(1);
-            newProjectile.transform.position = transform.position;
-            newProjectile.transform.rotation = transform.rotation;
+            var newProjectile = ObjectPooler.GetPooledObject(1);
+            newProjectile.transform.SetPositionAndRotation(transform.position, transform.rotation);
             lastShotProjectile = newProjectile;
             newProjectile.SetActive(true);
         }
-    }
-
-    private IEnumerator Respawn()
-    {
-        yield return new WaitForSeconds(2f);
-        ToggleGraphic(true);
-        transform.position = GameManager.GetFreeRandomPosition();
-        isAlive = true;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -103,7 +96,7 @@ public class ShootingObject : MonoBehaviour
             ToggleGraphic(false);
             if(health > 0)
             {
-                StartCoroutine(Respawn());
+                OnHit?.Invoke(this);
             }
             else
             {

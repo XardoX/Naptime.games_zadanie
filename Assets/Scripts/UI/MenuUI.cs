@@ -1,12 +1,9 @@
 using System;
-using System.Linq;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.UI.Extensions;
 using UnityEngine.SceneManagement;
-using TMPro;
+
 public class MenuUI : MonoBehaviour
 {
     [SerializeField]
@@ -14,6 +11,9 @@ public class MenuUI : MonoBehaviour
 
     [SerializeField]
     private SegmentedControl objectCountSegmentedControl;
+
+    [SerializeField]
+    private Button startButton;
 
     [SerializeField]
     private CanvasGroup mainMenuWindow, endGameWindow;
@@ -47,6 +47,10 @@ public class MenuUI : MonoBehaviour
     public void ToggleEndGameUI(bool toggle)
     {
         endGameWindow.gameObject.SetActive(toggle);
+    }
+    public void EnableStartButton()
+    {
+        startButton.interactable = true;
     }
 
     private void Awake()
